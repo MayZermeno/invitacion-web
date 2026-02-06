@@ -77,7 +77,7 @@ function InvitationPage() {
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] flex justify-center relative">
-      <div className="w-full justify-center max-w-3xl px-5 py-8 flex flex-col gap-12 pb-28 font-serif">
+      <div className="w-full max-w-3xl px-5 py-8 flex flex-col gap-12 pb-28 font-serif">
         {/* INICIO */}
         <section id="inicio">
           <Header />

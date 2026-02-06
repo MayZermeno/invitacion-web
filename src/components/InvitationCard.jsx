@@ -1,4 +1,4 @@
-import invitationImage from '/Users/MZ/Project/invitation-web/src/assets/invitepic.png'
+import invitationImage from '../assets/invitepic.png'
 
 function InvitationCard() {
   return (
