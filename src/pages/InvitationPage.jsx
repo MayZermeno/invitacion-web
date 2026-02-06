@@ -9,6 +9,7 @@ import RSVPSection from "../components/RSVPSection"
 import BottomNavigation from "../components/BottomNavigation"
 import Location from "../components/Location"
 import Vestimenta from "../components/Vestimenta"
+import ImportantInfo from "../components/ImportantInfo"
 
 function InvitationPage() {
   const { token } = useParams()
@@ -89,7 +90,12 @@ function InvitationPage() {
           <RSVPSection invitado={invitado} token={token} />
         </section>
 
-        {/* Ubicación */}
+        {/* INFO SORPRESA */}
+        <section id="info">
+          <ImportantInfo />
+        </section>
+
+         {/* Ubicación */}
         <section id="ubicacion">
           <Location />
         </section>
