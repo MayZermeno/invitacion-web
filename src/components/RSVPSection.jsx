@@ -24,7 +24,7 @@ function RSVPSection({ invitado: invitadoProp, token }) {
             setInvitado(data)
             setRespuesta(data.asistencia ? "yes" : "")
             setBoletosUsados(data.boletos_usados > 0 ? data.boletos_usados : 1)
-            setGuardado(data.confirmado || false)
+            setGuardado(data.confirmado === true)
           }
         } catch (err) {
           console.error(err)
@@ -37,30 +37,43 @@ function RSVPSection({ invitado: invitadoProp, token }) {
     }
   }, [token, invitadoProp])
 
-  const handleSave = async () => {
-    if (respuesta === "") {
-      setError("Selecciona tu asistencia")
-      return
-    }
-    if (respuesta === "yes" && (boletosUsados < 1 || boletosUsados > invitado.boletos_asignados)) {
-      setError("Cantidad de boletos inválida")
-      return
-    }
+const handleSave = async () => {
+  // 🔒 Candado: si ya confirmó, no permitir cambios
+ if (!invitado || invitado.confirmado) {
+  return
+}
 
-    try {
-      const ref = doc(db, "invitados", token)
-      await updateDoc(ref, {
-        asistencia: respuesta === "yes",
-        confirmado: true,
-        boletos_usados: respuesta === "yes" ? boletosUsados : 0
-      })
-      setGuardado(true)
-      setError("")
-    } catch (err) {
-      console.error(err)
-      setError("No se pudo guardar la respuesta")
-    }
+  if (respuesta === "") {
+    setError("Selecciona tu asistencia")
+    return
   }
+
+  if (
+    respuesta === "yes" &&
+    (boletosUsados < 1 || boletosUsados > invitado.boletos_asignados)
+  ) {
+    setError("Cantidad de boletos inválida")
+    return
+  }
+
+  try {
+    const ref = doc(db, "invitados", token)
+
+    await updateDoc(ref, {
+      asistencia: respuesta === "yes",
+      confirmado: true,
+      boletos_usados: respuesta === "yes" ? boletosUsados : 0
+    })
+
+    setGuardado(true)
+    setInvitado({ ...invitado, confirmado: true }) // 🔒 bloquea en frontend
+    setError("")
+  } catch (err) {
+    console.error(err)
+    setError("No se pudo guardar la respuesta")
+  }
+}
+
 
   if (loading) return <p className="text-center mt-10">Cargando invitación…</p>
   if (error) return <p className="text-center mt-10 text-red-600">{error}</p>
@@ -105,12 +118,18 @@ function RSVPSection({ invitado: invitadoProp, token }) {
             </div>
           )}
 
-          <button
-            onClick={handleSave}
-            className="mt-4 px-6 py-2 bg-violet-400/80 text-white rounded-full hover:bg-violet-600 transition"
-          >
-            Enviar
-          </button>
+      <button
+  onClick={handleSave}
+  disabled={guardado}
+  className={`mt-4 px-6 py-2 rounded-full transition
+    ${guardado
+      ? "bg-neutral-300 cursor-not-allowed"
+      : "bg-mauve text-white hover:brightness-110"}
+  `}
+>
+  Enviar
+</button>
+
         </div>
       ) : (
        <p className="mt-6 text-sm text-neutral-700">

@@ -5,6 +5,9 @@ export default {
       fontFamily: {
         serif: ['"Cormorant Garamond"', "serif"],
       },
+       colors: {
+        mauve: "#867380"
+      }
     },
   },
   plugins: [],
