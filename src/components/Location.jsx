@@ -11,7 +11,7 @@ function Location() {
   
         {/* Dirección */}
         <p className="text-md leading-relaxed">
-          Av. Durazno 85, Izcalli Cuauhtémoc, 52176 San Salvador Tizatlalli, Méx.
+          Av. Durazno 85, Izcalli Cuauhtémoc, 52176 San Salvador Tizatlalli, Edo Méx.
         </p>
   
         {/* Mapa */}
