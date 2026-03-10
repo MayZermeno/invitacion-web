@@ -84,17 +84,17 @@ function InvitationPage() {
           <Header />
           <InvitationCard invitado={invitado} />
         </section>
-          {/* INFO SORPRESA */}
-        <section id="info">
-          <ImportantInfo />
-        </section>
+         
 
         {/* RSVP */}
         <section id="rsvp">
           <RSVPSection invitado={invitado} token={token} />
         </section>
 
-      
+       {/* INFO SORPRESA */}
+        <section id="info">
+          <ImportantInfo />
+        </section>
 
          {/* Ubicación */}
         <section id="ubicacion">
