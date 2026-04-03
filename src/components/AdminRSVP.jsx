@@ -47,7 +47,39 @@ const boletosRechazados = invitados.reduce((total, inv) => {
   }
   return total
 }, 0)
+const downloadCSV = () => {
+  const headers = [
+    "Token",
+    "Nombre",
+    "Confirmado",
+    "Asistencia",
+    "Boletos usados",
+    "Boletos asignados"
+  ]
 
+  const rows = invitados.map(inv => [
+    inv.id,
+    inv.nombre,
+    inv.confirmado ? "Sí" : "No",
+    inv.asistencia === true ? "Sí" : inv.asistencia === false ? "No" : "",
+    inv.boletos_usados || 0,
+    inv.boletos_asignados || 0
+  ])
+
+  const csv = [headers, ...rows]
+    .map(row => row.join(";"))
+    .join("\n")
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
+  const url = URL.createObjectURL(blob)
+
+  const link = document.createElement("a")
+  link.href = url
+  link.setAttribute("download", "invitados.csv")
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
   return (
     <div className="min-h-screen bg-[#FAF7F2] p-8 font-sans">
 
@@ -92,7 +124,12 @@ const boletosRechazados = invitados.reduce((total, inv) => {
       {boletosRechazados}
     </p>
   </div>
-
+<button
+  onClick={downloadCSV}
+  className="mb-4 px-4 py-2 bg-mauve text-white rounded-lg text-sm"
+>
+  Descargar CSV
+</button>
 </div>
 
       {/* Tabla */}
