@@ -20,16 +20,30 @@ function AdminRSVP() {
     fetchInvitados()
   }, [])
 
-  const confirmados = invitados.filter(i => i.confirmado === true).length
+ const confirmados = invitados.filter(i => i.confirmado === true).length
 
-  const pendientes = invitados.filter(i => i.confirmado !== true).length
+const pendientes = invitados.filter(i => i.confirmado !== true).length
 
-  const boletosTotales = invitados.reduce((total, inv) => {
+const boletosUsados = invitados.reduce((total, inv) => {
   if (inv.confirmado && inv.asistencia) {
     return total + (inv.boletos_usados || 0)
   }
-    return total
-  }, 0)
+  return total
+}, 0)
+
+const boletosLibres = invitados.reduce((total, inv) => {
+  if (!inv.confirmado) {
+    return total + (inv.boletos_asignados || 0)
+  }
+  return total
+}, 0)
+
+const boletosRechazados = invitados.reduce((total, inv) => {
+  if (inv.confirmado && inv.asistencia === false) {
+    return total + (inv.boletos_asignados || 0)
+  }
+  return total
+}, 0)
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] p-8 font-sans">
@@ -39,31 +53,44 @@ function AdminRSVP() {
       </h1>
 
       {/* Panel resumen */}
-      <div className="flex gap-6 mb-6">
+   <div className="flex flex-wrap gap-4 mb-6">
 
-        <div className="bg-white border rounded-lg px-4 py-3 w-40">
-          <p className="text-xs text-neutral-500">Confirmados</p>
-          <p className="text-xl text-green-600 font-semibold">
-            {confirmados}
-          </p>
-        </div>
+  <div className="bg-white border rounded-lg px-4 py-3 w-44">
+    <p className="text-xs text-neutral-500">Confirmados</p>
+    <p className="text-xl text-green-600 font-semibold">
+      {confirmados}
+    </p>
+  </div>
 
-     
+  <div className="bg-white border rounded-lg px-4 py-3 w-44">
+    <p className="text-xs text-neutral-500">Pendientes</p>
+    <p className="text-xl text-blue-500 font-semibold">
+      {pendientes}
+    </p>
+  </div>
 
-        <div className="bg-white border rounded-lg px-4 py-3 w-40">
-          <p className="text-xs text-neutral-500">Pendientes</p>
-          <p className="text-xl text-blue-500 font-semibold">
-            {pendientes}
-          </p>
-        </div>
-           <div className="bg-white border rounded-lg px-4 py-3 w-40">
-          <p className="text-xs text-neutral-500">Boletos Usados</p>
-          <p className="text-xl text-neutral-700 font-semibold">
-            {boletosTotales}
-          </p>
-        </div>
+  <div className="bg-white border rounded-lg px-4 py-3 w-44">
+    <p className="text-xs text-neutral-500">Boletos usados</p>
+    <p className="text-xl text-mauve font-semibold">
+      {boletosUsados}
+    </p>
+  </div>
 
-      </div>
+  <div className="bg-white border rounded-lg px-4 py-3 w-44">
+    <p className="text-xs text-neutral-500">Boletos libres</p>
+    <p className="text-xl text-yellow-600 font-semibold">
+      {boletosLibres}
+    </p>
+  </div>
+
+  <div className="bg-white border rounded-lg px-4 py-3 w-44">
+    <p className="text-xs text-neutral-500">Boletos rechazados</p>
+    <p className="text-xl text-red-500 font-semibold">
+      {boletosRechazados}
+    </p>
+  </div>
+
+</div>
 
       {/* Tabla */}
       <div className="bg-white border rounded-lg overflow-hidden">
