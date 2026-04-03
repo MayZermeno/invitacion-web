@@ -24,10 +24,10 @@ function AdminRSVP() {
 
   const pendientes = invitados.filter(i => i.confirmado !== true).length
 
-  const totalPersonas = invitados.reduce((total, inv) => {
-    if (inv.confirmado && inv.asistencia) {
-      return total + (inv.boletos_usados || 0)
-    }
+  const boletosTotales = invitados.reduce((total, inv) => {
+  if (inv.confirmado && inv.asistencia) {
+    return total + (inv.boletos_usados || 0)
+  }
     return total
   }, 0)
 
@@ -48,17 +48,18 @@ function AdminRSVP() {
           </p>
         </div>
 
-        <div className="bg-white border rounded-lg px-4 py-3 w-40">
-          <p className="text-xs text-neutral-500">Personas</p>
-          <p className="text-xl text-neutral-700 font-semibold">
-            {totalPersonas}
-          </p>
-        </div>
+     
 
         <div className="bg-white border rounded-lg px-4 py-3 w-40">
           <p className="text-xs text-neutral-500">Pendientes</p>
           <p className="text-xl text-blue-500 font-semibold">
             {pendientes}
+          </p>
+        </div>
+           <div className="bg-white border rounded-lg px-4 py-3 w-40">
+          <p className="text-xs text-neutral-500">Boletos Usados</p>
+          <p className="text-xl text-neutral-700 font-semibold">
+            {boletosTotales}
           </p>
         </div>
 
