@@ -6,9 +6,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+         <Route path="/admin" element={<AdminRSVP/>} />
         <Route path="/:token" element={<InvitationPage />} />
           {/* Panel admin */}
-        <Route path="/admin" element={<AdminRSVP/>} />
+       
       </Routes>
     </BrowserRouter>
   )
