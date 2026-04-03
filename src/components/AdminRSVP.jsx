@@ -39,8 +39,11 @@ const boletosLibres = invitados.reduce((total, inv) => {
 }, 0)
 
 const boletosRechazados = invitados.reduce((total, inv) => {
-  if (inv.confirmado && inv.asistencia === false) {
-    return total + (inv.boletos_asignados || 0)
+  if (inv.confirmado) {
+    const usados = inv.asistencia ? (inv.boletos_usados || 0) : 0
+    const asignados = inv.boletos_asignados || 0
+
+    return total + (asignados - usados)
   }
   return total
 }, 0)
