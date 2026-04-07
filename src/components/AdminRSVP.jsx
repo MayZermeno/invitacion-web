@@ -49,28 +49,29 @@ const boletosRechazados = invitados.reduce((total, inv) => {
 }, 0)
 const downloadCSV = () => {
   const headers = [
-    "Token",
     "Nombre",
-    "Confirmado",
-    "Asistencia",
+    "Boletos asignados",
     "Boletos usados",
-    "Boletos asignados"
+    "Confirmado"
   ]
 
   const rows = invitados.map(inv => [
-    inv.id,
-    inv.nombre,
-    inv.confirmado ? "Sí" : "No",
-    inv.asistencia === true ? "Sí" : inv.asistencia === false ? "No" : "",
+    inv.nombre || "",
+    inv.boletos_asignados || 0,
     inv.boletos_usados || 0,
-    inv.boletos_asignados || 0
+    inv.confirmado ? "Sí" : "No"
   ])
 
-  const csv = [headers, ...rows]
-    .map(row => row.join(";"))
-    .join("\n")
+  const csvContent =
+    "\uFEFF" + // 👈 esto arregla acentos en Excel
+    [headers, ...rows]
+      .map(row => row.join(";")) // 👈 MUY IMPORTANTE para Excel en español
+      .join("\n")
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;"
+  })
+
   const url = URL.createObjectURL(blob)
 
   const link = document.createElement("a")
